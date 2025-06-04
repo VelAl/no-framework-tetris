@@ -30,8 +30,7 @@ export class Tetris {
 
     const column = PLAYFIELD_COLUMNS / 2 - Math.ceil(matrix.length / 2);
 
-    const row = -2
-
+    const row = -2;
 
     this.tetramino = {
       name,
@@ -112,8 +111,21 @@ export class Tetris {
       }
     }
 
-    console.log("this ===>", this.playfield);
     this.generateTetramino();
+    this.deleteFilledRows();
+  }
+
+  deleteFilledRows() {
+    const filledLines = this.findFilledRows();
+    filledLines.forEach(this.dropRowsAbowe);
+  }
+
+  findFilledRows() {
+    return this.playfield.reduce((akk, row, ind) => {
+      if (row.every((cell) => cell)) akk.push(ind);
+
+      return akk;
+    }, []);
   }
 
   isCollides(row, col) {
@@ -122,4 +134,14 @@ export class Tetris {
 
     return !!this.playfield[y]?.[x];
   }
+
+  dropRowsAbowe = (rowToDelete) => {
+    for (let row = rowToDelete; row > 0; row--) {
+      // console.log('row ===>', row);
+      // console.log('value ===>', this.playfield);
+      this.playfield[row] = this.playfield[row - 1];
+
+      this.playfield[0] = new Array(PLAYFIELD_COLUMNS).fill(0);
+    }
+  };
 }

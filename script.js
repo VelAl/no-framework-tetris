@@ -66,7 +66,6 @@ function onKeydown(e) {
     }
 
     case "ArrowLeft": {
-      console.log("value ===>");
       moveLeft();
       break;
     }
