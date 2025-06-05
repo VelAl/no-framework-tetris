@@ -6,8 +6,10 @@ import {
 } from "./utilities.js";
 
 const tetris = new Tetris();
-
 const DOMcells = document.querySelectorAll(".grid>div");
+
+let timeout;
+let requestId;
 
 const drawTetramino = () => {
   /*ACTIVE FIGURE*/
@@ -52,7 +54,8 @@ function drawPlayField() {
 }
 
 initKeyDown();
-draw();
+
+moveDown();
 
 function initKeyDown() {
   document.addEventListener("keydown", onKeydown);
@@ -88,6 +91,9 @@ function onKeydown(e) {
 function moveDown() {
   tetris.moveTetroDown();
   draw();
+
+  stopLoop();
+  startLoop();
 }
 
 function moveLeft() {
@@ -103,4 +109,15 @@ function moveRight() {
 function rotate() {
   tetris.rotateTetro();
   draw();
+}
+
+function startLoop() {
+  timeout = setTimeout(() => {
+    requestId = requestAnimationFrame(moveDown);
+  }, 400);
+}
+
+function stopLoop() {
+  cancelAnimationFrame(requestId);
+  clearTimeout(timeout);
 }
