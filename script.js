@@ -94,6 +94,10 @@ function moveDown() {
 
   stopLoop();
   startLoop();
+
+  if (tetris.isGameOver) {
+    gameOver();
+  }
 }
 
 function moveLeft() {
@@ -114,10 +118,15 @@ function rotate() {
 function startLoop() {
   timeout = setTimeout(() => {
     requestId = requestAnimationFrame(moveDown);
-  }, 400);
+  }, 2000);
 }
 
 function stopLoop() {
   cancelAnimationFrame(requestId);
   clearTimeout(timeout);
+}
+
+function gameOver() {
+  stopLoop();
+  document.removeEventListener("keydown", onKeydown);
 }

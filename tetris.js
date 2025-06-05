@@ -10,6 +10,7 @@ export class Tetris {
   constructor() {
     this.playfield;
     this.tetramino;
+    this.isGameOver = false;
     this.init();
   }
 
@@ -105,6 +106,10 @@ export class Tetris {
     for (let row = 0; row < matrixSize; row++) {
       for (let col = 0; col < matrixSize; col++) {
         if (!this.tetramino.matrix[row][col]) continue;
+        if (this.isOutsideOfTopBoard(row)) {
+          this.isGameOver = true;
+          return;
+        }
 
         this.playfield[this.tetramino.row + row][this.tetramino.column + col] =
           this.tetramino.name;
@@ -144,4 +149,8 @@ export class Tetris {
       this.playfield[0] = new Array(PLAYFIELD_COLUMNS).fill(0);
     }
   };
+
+  isOutsideOfTopBoard(row) {
+    return this.tetramino.row + row < 0;
+  }
 }
